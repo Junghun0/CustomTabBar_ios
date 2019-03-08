@@ -145,7 +145,7 @@ class NewAppDelegate : UIResponder, UIApplicationDelegate{
 }
 ```
 
-* 탭 바에 애니메이션 효과 추가
+* 탭 바 애니메이션 효과 추가
 
 ```swift
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
