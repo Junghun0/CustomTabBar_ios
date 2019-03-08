@@ -31,9 +31,57 @@ _AppDelegate 의 application(_:didFinishLaunchingWithOptions:) 메소드에 적�
                         tbItems[0].title = "Calendar"
                         tbItems[1].title = "File"
                         tbItems[2].title = "Photo"
+                        
+                        //5. 활성화된 탭 바 아이템으 이미지 색상을 변경한다.
+                        tbProxy.tintColor = UIColor.white
+                        
+                        //6.탭 바에 배경 이미지를 설정한다.
+                        tbProxy.backgroundImage = UIImage(named: "menubar-bg-mini")
                 }
         }
         return true
     }
+```
+* 크기가 맞지않는 이미지를 탭바 배경이미지로 설정할 때
+
+1) 아무설정없음
+
+```swift
+   tbC.tabBar.backgroundImage = UIImage(named:"connectivity-bar")
+```
+   
+   
+2)  x 좌표의 이미지만 늘어나고, x좌표를 기준을 분할된 좌우측의 이미지는 나뉘어 양쪽끝에 밀착됨 
+    y 좌표를 기준으로 분할된 위아래 이미지는 그대로 상하단에 붙고, y좌표의 이미지만 늘어나서 배경을 채움
+  
+  
+```swift
+  let bg = UIImage(named: "connectivity-bar")?.stretchableImage(withLeftCapWidth: 5, topCapHeight: 16)
+  tbC.tabBar.backgroundImage = bg
+  ```
+
+  
+3)  전체적인 이미지를 균일하게 늘림
+```swift
+  let bg = UIImage(named:"connectivity-bar")?.stretchableImage(withLeftCapWidth: 0, tapCapHeight: 0)
+  tbC.tabBar.backgroundImage = bg
+```
+
+* 탭 바 아이템에 원본 이미지 적용하기
+
+```swift
+  //이미지 원본으로 등록 색상 변경
+  tbItems[0].image = UIImage(named: "designbump")?.withRenderingMode(.alwaysOriginal)
+  tbItems[1].image = UIImage(named: "rss")?.withRenderingMode(.alwaysOriginal)
+  tbItems[2].image = UIImage(named: "facebook")?.withRenderingMode(.alwaysOriginal)
+```
+
+
+* 탭 바 선택될 때 이미지 변경
+
+```swift
+  //탭 바 아이템 전체를 순회하면서 selectedImage 속성에 이미지를 설정한다.
+  let image = UIImage(named: "checkmark")?.withRenderingMode(.alwaysOriginal)
+  tbItem.selectedImage = image
 ```
 
