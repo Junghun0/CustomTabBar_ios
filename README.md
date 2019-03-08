@@ -10,7 +10,7 @@ override func viewDidLoad(){
 ```
 
 **viewDidLoad() 함수안에서 tabBarItem 만들게 되면 , 각 탭이 처음 활성화되는 순간에 작성한 코드가 적용되기 때문에 옳지않다 !**
-_AppDelegate 의 application(_:didFinishLaunchingWithOptions:) 메소드에 적합하다.(앱의 초기화가 완료되었을때 시스템에 의해 자동으로 호출됨)_
+_AppDelegate 의 application(_:didFinishLaunchingWithOptions:) 메소드에 적합하다.(앱의 초기화가 완료되었을때 시스템에 의해 자동으로 호출됨)
 
 - - -
 * AppDelegate.swift
@@ -85,3 +85,77 @@ _AppDelegate 의 application(_:didFinishLaunchingWithOptions:) 메소드에 적�
   tbItem.selectedImage = image
 ```
 
+* 탭 바 아이템별 텍스트 색상 속성 변경
+
+
+```swift
+        for tbItem in tbItems {
+                    //탭 바 아이템별 텍스트 색상 속성 설정하기
+                    
+                    //선택안되었을때
+                    tbItem.setTitleTextAttributes([NSAttributedString.Key(rawValue:                                                                     NSAttributedString.Key.foregroundColor.rawValue) : UIColor.gray], for: .disabled)
+                    
+                    //선택되었을때
+                    tbItem.setTitleTextAttributes([NSAttributedString.Key(rawValue: NSAttributedString.Key.foregroundColor.rawValue) : UIColor.red], for: .selected)
+                    
+                    //전체 아이템의 폰트 크기 설정
+                    tbItem.setTitleTextAttributes([NSAttributedString.Key(rawValue: NSAttributedString.Key.font.rawValue) : UIFont.systemFont(ofSize: 15)], for: .normal)*/
+                }
+```
+
+#### AppDelegate 직접만들기 -> TabBarController 직접만들기
+
+* 앱 델리게이트 클래스 구현 조건
+   1. UIResponder 클래스를 상속받아야 한다.
+   2. UIApplicationDelegate 프로토콜을 구현해야 한다.
+   3. UIWindow 타입의 멤버 변수 window가 정의되어 있어야 한다.
+   4. @UIApplicationMain 어트리뷰트가 프로젝트 내에서 유일하게 추가되어 있어야 한다.
+   
+* NewAppDelegate.swift
+
+```swift
+@UIApplicationMain //-> 시스템에 앱 델리게이트로 인식시키는 역할 (AppDelegate.swift 파일에서 NewAppDelegate.swift 파일로 delegate 설정변경)
+class NewAppDelegate : UIResponder, UIApplicationDelegate{
+    var window: UIWindow?
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        
+        //1.탭 바 컨트롤러를 생성하고, 배경을 흰색으로 채운다.
+        let tbC = UITabBarController()
+        tbC.view.backgroundColor = .white
+        
+        //2.생성된 tbC를 루트 뷰 컨트롤러로 등록
+        self.window?.rootViewController = tbC
+        
+        //3.각 탭 바 아이템에 연결될 뷰 컨트롤러 객체를 생성
+        let view01 = ViewController()
+        let view02 = SecondViewController()
+        let view03 = ThirdViewController()
+        
+        //4.생성된 뷰 컨트롤러 객체들을 탭 바 컨트롤러에 등록한다.
+        tbC.setViewControllers([view01,view02,view03], animated: false)
+        
+        //5.개별 탭 바 아이템의 속성을 설정한다.
+        view01.tabBarItem = UITabBarItem(title: "Calendar", image: UIImage(named: "calendar"), selectedImage: nil)
+        view02.tabBarItem = UITabBarItem(title: "File", image: UIImage(named: "file-tree"), selectedImage: nil)
+        view03.tabBarItem = UITabBarItem(title: "Photo", image: UIImage(named: "photo"), selectedImage: nil)
+        
+        return true
+    }
+}
+```
+
+* 탭 바에 애니메이션 효과 추가
+
+```swift
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let tabBar = self.tabBarController?.tabBar
+        //tabBar?.isHidden = (tabBar?.isHidden == true) ? false : true
+        
+        UIView.animate(withDuration: TimeInterval(1)) {
+            //alpha 값이 0이면 1로, 1이면 0으로 바꾸어준다.
+            //호출될 때마다 점점 투명해졌다가 점점 진해질 것이다.
+            tabBar?.alpha = (tabBar?.alpha == 0 ? 1 : 0)
+        }
+    }
+```
