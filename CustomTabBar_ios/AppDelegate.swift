@@ -25,11 +25,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 tbItems[1].image = UIImage(named: "rss")?.withRenderingMode(.alwaysOriginal)
                 tbItems[2].image = UIImage(named: "facebook")?.withRenderingMode(.alwaysOriginal)
                 
-                //탭 바 아이템 전체를 순회하면서 selectedImage 속성에 이미지를 추가한다.
+                //탭 바 아이템 전체를 순회하면서 selectedImage 속성에 이미지를 추가한다. 선택되는 탭 이미지변경
                 for tbItem in tbItems {
                     let image = UIImage(named: "checkmark")?.withRenderingMode(.alwaysOriginal)
                     tbItem.selectedImage = image
+                    
+                    //탭 바 아이템별 텍스트 색상 속성 설정하기
+                    
+                    //선택안되었을때
+                    tbItem.setTitleTextAttributes([NSAttributedString.Key(rawValue: NSAttributedString.Key.foregroundColor.rawValue) : UIColor.gray], for: .disabled)
+                    //선택되었을때
+                    tbItem.setTitleTextAttributes([NSAttributedString.Key(rawValue: NSAttributedString.Key.foregroundColor.rawValue) : UIColor.red], for: .selected)
+                    
+                    //전체 아이템의 폰트 크기 설정
+                    tbItem.setTitleTextAttributes([NSAttributedString.Key(rawValue: NSAttributedString.Key.font.rawValue) : UIFont.systemFont(ofSize: 15)], for: .normal)
+                    
                 }
+                
+                
+
+                
+                
+                
                 
                 //3. 탭 바 아이템에 커스텀 이미지를 등록한다.
 //                tbItems[0].image = UIImage(named: "calendar")
